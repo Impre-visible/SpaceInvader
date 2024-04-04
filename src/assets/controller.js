@@ -2,7 +2,6 @@ import { eventManager } from '../lib/core/event_manager';
 import { gfx2TextureManager } from '../lib/gfx2/gfx2_texture_manager';
 import { Gfx2Drawable } from '../lib/gfx2/gfx2_drawable';
 import { Gfx2SpriteJSS } from '../lib/gfx2_sprite/gfx2_sprite_jss';
-import { Bullet } from './bullet';
 // ---------------------------------------------------------------------------------------
 
 class Controller extends Gfx2Drawable {
@@ -24,12 +23,12 @@ class Controller extends Gfx2Drawable {
     }
 
     shoot() {
-        console.log("test")  
-        const bullet = new Bullet(this.position[0] + 16, this.position[1], 0.1);
-        console.log('Bullet created at', bullet.x, bullet.y);
+        const data = { x: this.position[0] + 16, y: this.position[1], speed: 2 };
+        eventManager.emit(this, 'SHOOT', data);
     }
 
     update(ts) {
+        console.log('update');
         this.jss.setPosition(this.position[0], this.position[1]);
         this.jss.update(ts);
     }
@@ -49,6 +48,7 @@ class Controller extends Gfx2Drawable {
         }
         return true;
     }
+
 
     draw() {
         this.jss.draw();
