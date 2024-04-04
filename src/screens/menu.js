@@ -1,8 +1,10 @@
 import { eventManager } from '../lib/core/event_manager';
+import { screenManager } from '../lib/screen/screen_manager';
 import { UIMenuText } from '../lib/ui_menu_text/ui_menu_text';
 import { uiManager } from '../lib/ui/ui_manager';
 import { Screen } from '../lib/screen/screen';
 import { UIText } from '../lib/ui_text/ui_text';
+import { GameScreen } from './game';
 
 class MenuScreen extends Screen {
     constructor() {
@@ -14,10 +16,14 @@ class MenuScreen extends Screen {
     async onEnter() {
         this.uiTitle.setText('Space Invaders (WARME Edition)');
         uiManager.addWidget(this.uiTitle, 'display: flex; justify-content: center; align-items: center; margin-top: 80px;margin-left: 50px; margin-right: 50px;');
-        this.uiMainMenu.add('START', "Nouvelle partie");
-        uiManager.addWidget(this.uiMainMenu, 'position: absolute; top: 50%; left: calc(50% - 100px); width: 200px;display: flex; justify-content: center; align-items: center;');
+        this.uiMainMenu.add('NEW', "New Game");
+        this.uiMainMenu.add('SETTINGS', "Settings");
+        this.uiMainMenu.add('CREDITS', "Credits");
+        this.uiMainMenu.add('QUIT', "Quit");
+        uiManager.addWidget(this.uiMainMenu, 'position:absolute; top:50%; left:50%; width:60%; transform:translate(-50%,-50%);');
         eventManager.subscribe(this.uiMainMenu, 'E_CLOSED', this, this.handleMainMenuClosed);
         eventManager.subscribe(this.uiMainMenu, 'E_ITEM_SELECTED', this, this.handleMainMenuItemSelected);
+        uiManager.focus(this.uiMainMenu)
     }
 
     handleMainMenuClosed() {
@@ -25,7 +31,12 @@ class MenuScreen extends Screen {
     }
 
     handleMainMenuItemSelected(data) {
-        console.log(data);
+        switch (data.id) {
+            case 'NEW':
+                screenManager.requestSetScreen(new GameScreen());
+            default:
+                break;
+        }
     }
 
     onExit() {
