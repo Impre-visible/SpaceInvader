@@ -24,9 +24,6 @@ class GameScreen extends Screen {
     }
 
     update(ts) {
-    }
-
-    handleActionOnce(ts) {
         if (inputManager.isActiveAction('LEFT')) {
             this.moveController(-this.move_step * this.controller.getSpeed() * ts, 0, 'LEFT');
         }
@@ -34,6 +31,9 @@ class GameScreen extends Screen {
             this.moveController(this.move_step * this.controller.getSpeed() * ts, 0, 'RIGHT');
         }
 
+    }
+
+    handleActionOnce() {
         console.log('action once');
         if (inputManager.isActiveAction('SELECT')) {
             console.log('SELECT');
